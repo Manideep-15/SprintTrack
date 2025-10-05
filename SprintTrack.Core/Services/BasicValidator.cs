@@ -1,25 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using SprintTrack.Core.Common;
 using System.Text.RegularExpressions;
 
 namespace SprintTrack.Core.Services
 {
     public class BasicValidator : IValidator
     {
-        public bool IsValidEmail(string email)
+        public Result<bool> IsValidEmail(string email)
         {
-            if (string.IsNullOrWhiteSpace(email)) return false;
-            return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+            if (string.IsNullOrWhiteSpace(email))
+                return Result<bool>.Failure("Email cannot be empty.");
+
+            if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                return Result<bool>.Failure("Email format is invalid.");
+
+            return Result<bool>.Success(true);
         }
 
-        public bool IsNonEmpty(string input)
+        public Result<bool> IsNonEmpty(string input)
         {
-            return !string.IsNullOrWhiteSpace(input);
+            if (string.IsNullOrWhiteSpace(input))
+                return Result<bool>.Failure("Input cannot be empty.");
+
+            return Result<bool>.Success(true);
+        }
+
+        public Result<bool> IsValidUsername(string username)
+        {
+            if (!Regex.IsMatch(username, @"^[a-zA-Z0-9_]{3,20}$"))
+                return Result<bool>.Failure("Username must be 3–20 characters and alphanumeric.");
+
+            return Result<bool>.Success(true);
         }
     }
 }
-
