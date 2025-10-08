@@ -1,35 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SprintTrack.Core.Entities
+﻿namespace SprintTrack.Core.Entities
 {
-    public class Task
+    public class TaskItem
     {
-        public Guid Id { get; private set; }
-        public string Description { get; private set; }
-        public Guid AssignedToUserId { get; private set; }
-        public Guid ProjectId { get; private set; }
-        public bool IsCompleted { get; private set; }
+        public Guid Id { get; set; }
+        public string Description { get; set; }
+        public Guid AssignedToUserId { get; set; }
+        public Guid ProjectId { get; set; }
+        public bool IsCompleted { get; set; }
 
-        public Task(string description, Guid assignedToUserId, Guid projectId)
+        public TaskItem(string description, Guid assignedToUserId, Guid projectId)
         {
-            if (string.IsNullOrWhiteSpace(description))
-                throw new ArgumentException("Description cannot be empty.");
-
             Id = Guid.NewGuid();
-            Description = description;                // Description must not be empty.
-            AssignedToUserId = assignedToUserId;     //AssignedToUserId and ProjectId must be valid GUIDs.
+            Description = description;
+            AssignedToUserId = assignedToUserId;
             ProjectId = projectId;
             IsCompleted = false;
         }
 
-        public void MarkComplete()
-        {
-            IsCompleted = true;
-        }
+        public void MarkComplete() => IsCompleted = true;
     }
 }
-
