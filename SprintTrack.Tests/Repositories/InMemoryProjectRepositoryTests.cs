@@ -1,6 +1,6 @@
-﻿using SprintTrack.Core.Entities;
-using SprintTrack.Core.Repositories;
-using SprintTrack.Infrastructure.Repositories;
+﻿using System;
+using SprintTrack.Core.Entities;
+using SprintTrack.Core.Repositories.InMemory;
 using Xunit;
 
 namespace SprintTrack.Tests.Repositories
@@ -8,43 +8,39 @@ namespace SprintTrack.Tests.Repositories
     public class InMemoryProjectRepositoryTests
     {
         [Fact]
-        public void AddAndGetProject_ShouldSucceed()
+        public void CanAddAndRetrieveProject()
         {
             var repo = new InMemoryProjectRepository();
-            var project = new Project("Test Project", DateTime.Today, DateTime.Today.AddDays(7));
-
+            var project = new Project("SprintTrack", "Minimal tracker");
             repo.Add(project);
-            var fetched = repo.GetById(project.Id);
 
-            Assert.NotNull(fetched);
-            Assert.Equal("Test Project", fetched.Title);
+            var fetched = repo.GetById(project.Id);
+            Assert.Equal("SprintTrack", fetched.Name);
         }
 
         [Fact]
-        public void UpdateProject_ShouldModifyData()
+        public void CanUpdateProject()
         {
             var repo = new InMemoryProjectRepository();
-            var project = new Project("Initial", DateTime.Today, DateTime.Today.AddDays(7));
+            var project = new Project("Old Name", "desc");
             repo.Add(project);
 
-            project = new Project("Updated", project.StartDate, project.EndDate) { Id = project.Id };
+            project = new Project("New Name", "desc") { Id = project.Id };
             repo.Update(project);
 
             var updated = repo.GetById(project.Id);
-            Assert.Equal("Updated", updated?.Title);
+            Assert.Equal("New Name", updated.Name);
         }
 
         [Fact]
-        public void DeleteProject_ShouldRemoveIt()
+        public void CanDeleteProject()
         {
             var repo = new InMemoryProjectRepository();
-            var project = new Project("To Delete", DateTime.Today, DateTime.Today.AddDays(7));
+            var project = new Project("ToDelete", "desc");
             repo.Add(project);
 
             repo.Delete(project.Id);
-            var result = repo.GetById(project.Id);
-
-            Assert.Null(result);
+            Assert.Null(repo.GetById(project.Id));
         }
     }
 }

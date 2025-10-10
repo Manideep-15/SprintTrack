@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SprintTrack.Core.Services
 {
-    public interface IValidator
+    public interface IValidator<T>
     {
-        bool IsValidEmail(string email);
-        bool IsNonEmpty(string input);
+        bool IsValid(T entity);
+        void Validate(Entities.Task task);
     }
 }
 

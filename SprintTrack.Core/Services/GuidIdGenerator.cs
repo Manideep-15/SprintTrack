@@ -1,15 +1,12 @@
-﻿using SprintTrack.Core.Common;
+﻿using System;
 
 namespace SprintTrack.Core.Services
 {
-    public class GuidIdGenerator : IIdGenerator
+    public class GuildIdGenerator : IIdGenerator
     {
-        public Result<Guid> GenerateId()
+        public Guid GenerateId()
         {
-            var id = Guid.NewGuid();
-            return id == Guid.Empty
-                ? Result<Guid>.Failure("Failed to generate ID.")
-                : Result<Guid>.Success(id);
+            return Guid.NewGuid();
         }
     }
 }

@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SprintTrack.Core.Common
+﻿namespace SprintTrack.Core.Common
 {
     public class Result<T>
     {
         public bool IsSuccess { get; }
-        public T? Value { get; }
         public string? Error { get; }
+        public T? Value { get; }
 
         private Result(bool isSuccess, T? value, string? error)
         {
@@ -23,4 +17,3 @@ namespace SprintTrack.Core.Common
         public static Result<T> Failure(string error) => new(false, default, error);
     }
 }
-

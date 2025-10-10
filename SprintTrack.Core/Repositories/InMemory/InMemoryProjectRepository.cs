@@ -1,24 +1,28 @@
-﻿using SprintTrack.Core.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SprintTrack.Core.Repositories;
+using SprintTrack.Core.Entities;
 
-namespace SprintTrack.Core.Repositories
+namespace SprintTrack.Core.Repositories.InMemory
 {
     public class InMemoryProjectRepository : IProjectRepository
     {
         private readonly Dictionary<Guid, Project> _projects = new();
 
-        public Project? GetById(Guid id) => _projects.GetValueOrDefault(id);
-
-        public IEnumerable<Project> GetAll() => _projects.Values;
-
         public void Add(Project project)
         {
             _projects[project.Id] = project;
+        }
+
+        public Project GetById(Guid id)
+        {
+            _projects.TryGetValue(id, out var project);
+            return project;
+        }
+
+        public IEnumerable<Project> GetAll()
+        {
+            return _projects.Values;
         }
 
         public void Update(Project project)
